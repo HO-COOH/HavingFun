@@ -48,21 +48,21 @@ int main()
 // stack allocation=9934232/s
 
 //In GCC O0:
-// heap allocation=1641543/s
-// stack allocation=194357927/s
+//heap allocation=10955000/s
+//stack allocation=196030179/s
 
 //In Visual Studio 2019 RELEASE:
 // heap allocation=21740491/s
 // stack allocation=2792612857/s
 
 //In GCC O1:
-// heap allocation=2308501/s
-// stack allocation=2927207784/s
+// heap allocation=24767904/s
+// stack allocation=3165869671/s
 
 //In GCC O3
-// heap allocation=2211887/s
-// stack allocation=3217322418/s
+// heap allocation=25234282/s
+// stack allocation=3193252804/s
 
 //In GCC Ofast:
-// heap allocation=2361879/s
-// stack allocation=3256246411/s
+// heap allocation=24477634/s
+// stack allocation=2780368205/s
