@@ -1,0 +1,5 @@
+C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build/CMakeFiles/package.dir
+C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build/CMakeFiles/Macro.dir
+C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build/CMakeFiles/package_source.dir
+C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build/CMakeFiles/edit_cache.dir
+C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build/CMakeFiles/rebuild_cache.dir

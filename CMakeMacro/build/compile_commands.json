@@ -1,0 +1,7 @@
+[
+{
+  "directory": "C:/Users/Peter/Desktop/HavingFun/CMakeMacro/build",
+  "command": "C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/g++.exe  -DMODE=Debug  -g   -o CMakeFiles/Macro.dir/main.cpp.obj -c C:/Users/Peter/Desktop/HavingFun/CMakeMacro/main.cpp",
+  "file": "C:/Users/Peter/Desktop/HavingFun/CMakeMacro/main.cpp"
+}
+]
