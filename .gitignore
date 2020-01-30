@@ -1,2 +1,4 @@
 
 *.exe
+.vs
+/Singleton_Design/build
