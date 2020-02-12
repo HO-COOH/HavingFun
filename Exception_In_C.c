@@ -32,7 +32,7 @@ ShouldReturnInt func()
 
 int main()
 {
-    ShouldReturnInt result=func();     //similar to try{}
-    if(result.exception->what!=NULL)   //similar to catch{}
+    ShouldReturnInt result=func();      //similar to try{}
+    if(result.exception!=NULL)          //similar to catch{}
     {/*...*/}  //don't forget to: free(result.exception->what); free(result.exception)
 }
