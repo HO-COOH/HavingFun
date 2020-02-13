@@ -1,3 +1,16 @@
+/*Description: Trying to simulate object-oriented programming in C
+*Introduction:
+*   Object-oriented programming is a programming paradigm based on the concepts of "objects", which can contain:
+*       data(fields, attributes, properties)
+*       code(procedures, methods)
+*   4 main features of OOP are:
+*       encapsulation
+*       abstraction
+*       inheritance
+*       polymorphism
+*/
+/*In this .c file, I demonstrate how to simulate the first 2 features using C*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
