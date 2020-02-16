@@ -1,0 +1,12 @@
+[
+{
+  "directory": "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/out",
+  "command": "C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe   -g   -o CMakeFiles/main.dir/student.c.obj   -c \"C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.c\"",
+  "file": "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.c"
+},
+{
+  "directory": "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/out",
+  "command": "C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe   -g   -o CMakeFiles/main.dir/main.c.obj   -c \"C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/main.c\"",
+  "file": "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/main.c"
+}
+]

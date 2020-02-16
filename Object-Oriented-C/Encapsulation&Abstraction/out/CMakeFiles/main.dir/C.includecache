@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.c
+student.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.h
+stdlib.h
+-
+string.h
+-
+stdio.h
+-
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.h
+
