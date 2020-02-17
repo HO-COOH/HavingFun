@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 struct student_impl_struct
 {
     char* name;
@@ -11,8 +12,11 @@ struct student_impl_struct
     int credit_hours;
     float GPA;
 };
-//Function implementations...
-//...
+
+Student_vtable global_vtable;
+static bool vtable_init = false;
+static void init_global_vtable();
+
 Student new_Student(char* name, int age, Year year)
 {
     Student student;
@@ -31,6 +35,9 @@ Student new_Student(char* name, int age, Year year)
     student.student_impl_ptr->year = year;
     student.student_impl_ptr->credit_hours = 0;
     student.student_impl_ptr->GPA = 4.0;
+    if(vtable_init==false)
+        init_global_vtable();
+    student.methods = &global_vtable;
     return student;
 }
 
@@ -99,4 +106,15 @@ void delete_Student(Student const *student)
             free(student->student_impl_ptr);
         }
     }
+}
+
+static void init_global_vtable()
+{
+    global_vtable.add_grade = &add_grade;
+    global_vtable.get_age = &get_age;
+    global_vtable.get_credit_hours = &get_credit_hours;
+    global_vtable.get_GPA = &get_GPA;
+    global_vtable.get_year = &get_year;
+    global_vtable.print_student_record = &print_student_record;
+    vtable_init = true;
 }

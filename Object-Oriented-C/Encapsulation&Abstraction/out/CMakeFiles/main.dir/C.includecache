@@ -6,6 +6,12 @@
 
 #IncludeRegexTransform: 
 
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/main.c
+student.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.h
+stdio.h
+-
+
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.c
 student.h
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.h
@@ -14,6 +20,8 @@ stdlib.h
 string.h
 -
 stdio.h
+-
+stdbool.h
 -
 
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Encapsulation&Abstraction/student.h
