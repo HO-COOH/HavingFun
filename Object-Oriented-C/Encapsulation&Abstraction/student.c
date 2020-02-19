@@ -13,7 +13,7 @@ struct student_impl_struct
     float GPA;
 };
 
-Student_vtable global_vtable;
+static Student_vtable global_vtable;
 static bool vtable_init = false;
 static void init_global_vtable();
 
