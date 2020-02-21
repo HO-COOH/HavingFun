@@ -245,3 +245,65 @@ static void init_global_vtable()
 }
 ```  
 ## Polymorphism
+From Wikipedia: https://en.wikipedia.org/wiki/Polymorphism_(computer_science)
+We focus on Subtyping polymorphism here, which is usually what we are referring to when talking about polymorphism in other object-oriented programming:
+> Some languages employ the idea of subtyping (also called subtype polymorphism or inclusion polymorphism) to restrict the range of types that can be used in a particular case of polymorphism. <br>
+> In these languages, subtyping allows a function to be written to take an object of a certain type T, but also work correctly, if passed an object that belongs to a type S that is a subtype of T (according to the Liskov substitution principle). <br>
+> This type relation is sometimes written S <: T. Conversely, T is said to be a supertype of S—written T :> S. Subtype polymorphism is usually resolved dynamically (see below).
+We need to figure out a way that a certain object behaves differently than their base class type when calling their inherited or overrided functions.  
+The good thing is that as a weakly-typed language, C does not actually "know" about the types, which is especially true when dealing with pointers. In C, pointers can be cast to any type.  
+And we happened to implement the actual ``impl`` struct by using a pointer in the actual object to it.  
+As a result, we can simply declare an object to be a base type object, but initialize it using the derived class constructor. And after that, calling the methods of the object is the actual function defined in the derived class, instead of base class.
+Using the same Shape class as an example, the ``.draw()`` function defined in ``Shape`` class actually accepts a ``Shape*`` but here we pass in ``Square*`` and ``Triangle*``:
+```c
+/*main.c*/
+Square my_square = new_Sqaure(4);
+Triangle my_triangle = new_Triangle(5);
+my_square.methods->shape_methods.draw(&my_square);      //call Square::draw();
+my_triangle.methods->shape_methods.draw(&my_triangle);  //call Triangle::draw();
+```
+The real challenge here is to define a global function that behaves differently according to the real type of the parameter, something like
+```c
+/*Shape.c*/
+#include "Shape.h"
+void processShape(Shape *shape)    //simulate polymorphism
+{
+    //getType of shape?
+}
+```
+Since C does not support function overloading (having the same function name for different types), we can work around by storing a ``type`` enum to the ``impl`` struct in all classes and let the function obtain the type through this enum. But this solution is not scalable and dependent. Each time a new derived class is defined, we will need to add something to the new enum. The best news is that client code is still clean.  
+Still using the previous inheritance for example
+```c
+/*Shape.h*/
+typedef enum shape_type
+{
+    Square_type,
+    Triangle_type
+} Shape_type;
+//...Same as Inheritance example
+void processShape(Shape *shape);    //simulate polymorphism
+
+/*Shape.c*/
+#include "Shape.h"
+#include "Square.h"
+#include "Triangle.h"
+void processShape(Shape* shape)
+{
+    switch(shape->methods->get_type(shape))
+    {
+    case Square_type:
+        {
+            puts("Processing a square: ");
+            break;
+        }
+    case Triangle_type:
+        {
+            puts("Processing a triangle: ");
+            break;
+        }
+    }
+    puts("Finish processing!");
+}
+```
+
+//TODO: Add a comprehensive generalized solution

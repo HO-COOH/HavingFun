@@ -6,29 +6,9 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.c
-Shape.h
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.h
-stdbool.h
--
-
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.h
 stdio.h
 -
-
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.c
-Square.h
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.h
-math.h
--
-stdbool.h
--
-stdlib.h
--
-
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.h
-Shape.h
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.h
 
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Triangle.c
 Triangle.h
@@ -45,12 +25,4 @@ stdio.h
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Triangle.h
 Shape.h
 C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.h
-
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/main.c
-Square.h
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.h
-Triangle.h
-C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Triangle.h
-stdio.h
--
 

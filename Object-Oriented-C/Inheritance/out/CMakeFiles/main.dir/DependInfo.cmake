@@ -4,7 +4,6 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.c" "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles/main.dir/Shape.c.obj"
   "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.c" "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles/main.dir/Square.c.obj"
   "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Triangle.c" "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles/main.dir/Triangle.c.obj"
   "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/main.c" "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles/main.dir/main.c.obj"

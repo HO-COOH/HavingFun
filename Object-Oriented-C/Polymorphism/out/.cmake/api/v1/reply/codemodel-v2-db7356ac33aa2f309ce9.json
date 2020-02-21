@@ -26,7 +26,7 @@
 					[
 						0
 					],
-					"name" : "Inheritance",
+					"name" : "Polymorphism",
 					"targetIndexes" : 
 					[
 						0
@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "main::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-main-Debug-35a55ba091091ebef5e2.json",
+					"jsonFile" : "target-main-Debug-6fc5594cb1d6c46c08e3.json",
 					"name" : "main",
 					"projectIndex" : 0
 				}
@@ -48,8 +48,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out",
-		"source" : "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance"
+		"build" : "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/out",
+		"source" : "C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism"
 	},
 	"version" : 
 	{

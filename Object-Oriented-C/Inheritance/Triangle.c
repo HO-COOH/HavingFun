@@ -65,7 +65,9 @@ static double getCircumference(Triangle* triangle)
 
 static void rotate(Triangle* triangle)
 {
-    triangle->triangle_impl_ptr->rotate = !triangle->triangle_impl_ptr->rotate;
+    //triangle->triangle_impl_ptr->rotate = !triangle->triangle_impl_ptr->rotate;
+    //a more concise way
+    triangle->triangle_impl_ptr->rotate ^= 1;
 }
 
 static Shape new_Shape()

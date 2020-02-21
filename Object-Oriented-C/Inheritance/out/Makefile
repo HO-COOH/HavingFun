@@ -123,33 +123,6 @@ main/fast:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
 .PHONY : main/fast
 
-Shape.obj: Shape.c.obj
-
-.PHONY : Shape.obj
-
-# target to build an object file
-Shape.c.obj:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Shape.c.obj
-.PHONY : Shape.c.obj
-
-Shape.i: Shape.c.i
-
-.PHONY : Shape.i
-
-# target to preprocess a source file
-Shape.c.i:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Shape.c.i
-.PHONY : Shape.c.i
-
-Shape.s: Shape.c.s
-
-.PHONY : Shape.s
-
-# target to generate assembly for a file
-Shape.c.s:
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Shape.c.s
-.PHONY : Shape.c.s
-
 Square.obj: Square.c.obj
 
 .PHONY : Square.obj
@@ -240,9 +213,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... main"
 	@echo "... rebuild_cache"
-	@echo "... Shape.obj"
-	@echo "... Shape.i"
-	@echo "... Shape.s"
 	@echo "... Square.obj"
 	@echo "... Square.i"
 	@echo "... Square.s"

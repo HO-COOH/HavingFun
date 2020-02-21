@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Shape.c
+Shape.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Shape.h
+Square.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Square.h
+Triangle.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Triangle.h
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Shape.h
+stdio.h
+-
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Square.h
+Shape.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Shape.h
+
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Triangle.h
+Shape.h
+C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Polymorphism/Shape.h
+

@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/main.dir/Shape.c.obj"
   "CMakeFiles/main.dir/Square.c.obj"
   "CMakeFiles/main.dir/Triangle.c.obj"
   "CMakeFiles/main.dir/main.c.obj"

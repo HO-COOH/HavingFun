@@ -70,22 +70,9 @@ CMakeFiles/main.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/main.c.s"
 	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/main.c -o CMakeFiles/main.dir/main.c.s
 
-CMakeFiles/main.dir/Shape.c.obj: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/Shape.c.obj: ../Shape.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/main.dir/Shape.c.obj"
-	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/Shape.c.obj   -c C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.c
-
-CMakeFiles/main.dir/Shape.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/Shape.c.i"
-	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.c > CMakeFiles/main.dir/Shape.c.i
-
-CMakeFiles/main.dir/Shape.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/Shape.c.s"
-	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Shape.c -o CMakeFiles/main.dir/Shape.c.s
-
 CMakeFiles/main.dir/Square.c.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/Square.c.obj: ../Square.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/main.dir/Square.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/main.dir/Square.c.obj"
 	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/Square.c.obj   -c C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Square.c
 
 CMakeFiles/main.dir/Square.c.i: cmake_force
@@ -98,7 +85,7 @@ CMakeFiles/main.dir/Square.c.s: cmake_force
 
 CMakeFiles/main.dir/Triangle.c.obj: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/Triangle.c.obj: ../Triangle.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/main.dir/Triangle.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/main.dir/Triangle.c.obj"
 	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/main.dir/Triangle.c.obj   -c C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/Triangle.c
 
 CMakeFiles/main.dir/Triangle.c.i: cmake_force
@@ -112,7 +99,6 @@ CMakeFiles/main.dir/Triangle.c.s: cmake_force
 # Object files for target main
 main_OBJECTS = \
 "CMakeFiles/main.dir/main.c.obj" \
-"CMakeFiles/main.dir/Shape.c.obj" \
 "CMakeFiles/main.dir/Square.c.obj" \
 "CMakeFiles/main.dir/Triangle.c.obj"
 
@@ -120,13 +106,12 @@ main_OBJECTS = \
 main_EXTERNAL_OBJECTS =
 
 main.exe: CMakeFiles/main.dir/main.c.obj
-main.exe: CMakeFiles/main.dir/Shape.c.obj
 main.exe: CMakeFiles/main.dir/Square.c.obj
 main.exe: CMakeFiles/main.dir/Triangle.c.obj
 main.exe: CMakeFiles/main.dir/build.make
 main.exe: CMakeFiles/main.dir/linklibs.rsp
 main.exe: CMakeFiles/main.dir/objects1.rsp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable main.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=C:/Users/Peter/Desktop/HavingFun/Object-Oriented-C/Inheritance/out/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable main.exe"
 	"C:/Program Files/CMake/bin/cmake.exe" -E remove -f CMakeFiles/main.dir/objects.a
 	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/ar.exe cr CMakeFiles/main.dir/objects.a @CMakeFiles/main.dir/objects1.rsp
 	C:/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/gcc.exe -g   -Wl,--whole-archive CMakeFiles/main.dir/objects.a -Wl,--no-whole-archive  -o main.exe -Wl,--out-implib,libmain.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles/main.dir/linklibs.rsp
