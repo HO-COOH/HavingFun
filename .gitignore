@@ -2,3 +2,7 @@
 *.exe
 .vs
 /Singleton_Design/build
+cmake-build-debug
+out
+.idea
+.vscode
