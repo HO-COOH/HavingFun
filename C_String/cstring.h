@@ -27,15 +27,15 @@ typedef struct cstring_t
     bool is_small;
 }CString;
 
-struct cstring_public
+struct cstring_public_t
 {
-    void (*assign_string)(char *data);  //assign a char* string
-    CString (*substr)(size_t pos);  //return a substr staring at index pos
-    void (*assign_cstring)(CString *data);  //assign a cstring
+    void (*assign_string)(CString* str, char *data);  //assign a char* string
+    CString (*substr)(CString* str, size_t pos);  //return a substr staring at index pos
+    void (*assign_cstring)(CString* dest, CString *src);  //assign a cstring
     bool (*empty)(CString *str);    //check whether the string is empty
     size_t (*length)(CString *str); //return the length of the string only, excluding '\0'
     size_t (*bytes)(CString *str);  //return the bytes of the string, including '\0'
-    void (*resize)(CString *str);   //resize the string, may truncate
+    void (*resize)(CString *str, size_t newSize);   //resize the string, may truncate
     void (*to_upper)(CString *str);
     void (*to_lower)(CString *str);
     bool (*reserve_bytes)(CString *str, size_t bytes);  //reserve new space in bytes, return success or failure
@@ -55,7 +55,12 @@ struct cstring_public
 
     bool (*replace_string)(CString *dest, char *pattern);   //find pattern in dest and replace dest
     bool (*replace_cstring)(CString *dest, CString *pattern);   //find pattern in dest and replace dest
-    
+
+    /*Compare*/
+    bool (*is_equal)(CString* str1, CString* str2);     //str1 =?= str2
+    bool (*is_bigger)(CString* str1, CString* str2);    //str1 >? str2
+    bool (*is_smaller)(CString* str1, CString* str2);   //str <? str2
+
     /*split and return array of CString according to delim, and modify n => number of splited*/
     CString *(*split_by_char)(CString *str, char delim, int* n);
     CString *(*split_by_string)(CString *str, char *delim, int *n);
@@ -70,6 +75,7 @@ struct cstring_public
 
 /*Constructor*/
 CString new_CString(char *data);
+CString new_CString_by(char* start, char* end);
 
 /*Destructor*/
 void delete_CString(CString *str);
