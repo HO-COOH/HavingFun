@@ -21,9 +21,15 @@ public:
     MyClass& operator=(MyClass const& obj)
     {
         puts("=Copy");
+        return *this;
     }
     MyClass& operator=(MyClass&& obj)noexcept
     {
         puts("=Move");
+        return *this;
+    }
+    void dostuff() const
+    {
+        puts("Doing stuff in MyClass");
     }
 };
