@@ -340,7 +340,7 @@ static bool reserve_bytes(CString* str, size_t bytes)
             {
                 if(str->impl->capacity>=bytes)
                     return true;
-                str->impl->data = realloc(str->impl->data, data_length + 1);
+                //str->impl->data = realloc(str->impl->data, data_length + 1);
                 str->impl->capacity=bytes;
             }
             str->is_small=false;
@@ -444,7 +444,7 @@ static CString* split_by_char(CString* str, char delim, int* n)
         int i=0;
         while(occurence--)
         {
-            char* start=get
+            //char* start=get
         }
     }
 }
