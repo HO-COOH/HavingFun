@@ -5,17 +5,30 @@
     "tasks": [
         {
             "type": "shell",
+<<<<<<< HEAD
             "label": "C/C++: g++.exe build active file",
             "command": "C:\\msys64\\mingw64\\bin\\g++.exe",
+=======
+            "label": "C/C++: g++ build active file",
+            "command": "/usr/bin/g++",
+>>>>>>> a9e4e981418b78c05553c353442f0b867b53dd19
             "args": [
                 "-g",
                 "-std=c++17",
                 "${file}",
+<<<<<<< HEAD
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "C:\\msys64\\mingw64\\bin"
+=======
+                "-o ${fileBasenameNoExtension}.out",
+                "-std=c++17"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+>>>>>>> a9e4e981418b78c05553c353442f0b867b53dd19
             },
             "problemMatcher": [
                 "$gcc"
