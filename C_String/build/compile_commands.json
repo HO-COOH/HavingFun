@@ -1,0 +1,12 @@
+[
+{
+  "directory": "C:/Users/Peter/Documents/HavingFun/C_String/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -DDEBUG  -g   -std=gnu11 -o CMakeFiles\\test.dir\\main.c.obj   -c C:\\Users\\Peter\\Documents\\HavingFun\\C_String\\main.c",
+  "file": "C:/Users/Peter/Documents/HavingFun/C_String/main.c"
+},
+{
+  "directory": "C:/Users/Peter/Documents/HavingFun/C_String/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -DDEBUG  -g   -std=gnu11 -o CMakeFiles\\test.dir\\cstring.c.obj   -c C:\\Users\\Peter\\Documents\\HavingFun\\C_String\\cstring.c",
+  "file": "C:/Users/Peter/Documents/HavingFun/C_String/cstring.c"
+}
+]

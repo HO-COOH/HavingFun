@@ -6,11 +6,26 @@
 /* Contribution: Open an issue and tell me the bug /
 * Open an issue and tell me what new functionality to add
 */
+
+/**Planing to have 2 branches for different search algorithm:
+ * - traditional O(m*n) method
+ * - boyer-moore algorithm (will be in experimental)
+*/
 #include <stdio.h>
 #include <stdbool.h>
-#define SMALL_STRING 16
+#define SMALL_STRING 24
 typedef struct cstring_impl_t CString_impl;
-typedef struct cstring_public_t cstring_public;
+typedef struct cstring_public_t CString_public;
+struct cstring_impl_t
+{
+    char *ptr;
+    size_t length;
+    size_t capacity;
+};
+typedef union data_t{
+    char small_string[SMALL_STRING];
+    CString_impl impl;
+} Data;
 typedef enum TYPE_ENUM
 {
     int_Type,
@@ -19,13 +34,21 @@ typedef enum TYPE_ENUM
     unsigned_int_Type,
     short_Type,
 }TYPE_ENUM;
+
+/*Definition for CString */
 typedef struct cstring_t
 {
-    char small_string[SMALL_STRING];
-    CString_impl *impl;
-    cstring_public *public;
+    Data data;
+    CString_public *public;
     bool is_small;
+    bool is_moved;
 }CString;
+
+typedef struct CString_Array_t
+{
+    int count;
+    CString * arr;
+}CStringArray;
 
 struct cstring_public_t
 {
@@ -38,7 +61,6 @@ struct cstring_public_t
     void (*resize)(CString *str, size_t newSize);   //resize the string, may truncate
     void (*to_upper)(CString *str);
     void (*to_lower)(CString *str);
-    bool (*reserve_bytes)(CString *str, size_t bytes);  //reserve new space in bytes, return success or failure
     bool (*reserve_length)(CString *str, size_t length);    //reserve new space in length, return success or failure
     void (*append_cstring)(CString *dest, CString *src);    //dest += src
     void (*append_string)(CString *dest, char *src);    //dest += src
@@ -68,13 +90,16 @@ struct cstring_public_t
 
     /*serialize*/
     bool (*serialize)(CString *str, FILE *f);
+    bool (*serialize_to)(CString *str, char *fileName);
 
     /*print*/
     void (*puts)(CString *str);
 };
 
 /*Constructor*/
-CString new_CString(char *data);
+CString new_CString(const char *data);
+CString empty_CString();
+CString move_to_CString(char *data);
 CString new_CString_by(char* start, char* end);
 
 /*Destructor*/
@@ -82,8 +107,12 @@ void delete_CString(CString *str);
 
 /*Deserialize*/
 CString CString_deserialize(FILE *f);
-CString line_to_cstring(FILE *f);
+CString CString_deserialize_from(char* fileName);
+CString line_to_CString(FILE *f);
+CString line_to_CString_from(char *fileName);
 
 /*Conversions to CString*/
-
 CString to_cstring(void *data, TYPE_ENUM type);
+
+/*Check CString info*/
+void print_info(const CString* str);
