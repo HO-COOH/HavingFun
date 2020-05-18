@@ -13,7 +13,10 @@
 */
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
+
 #define SMALL_STRING 24
+#define CString_npos SIZE_MAX
 typedef struct cstring_impl_t CString_impl;
 typedef struct cstring_public_t CString_public;
 struct cstring_impl_t
@@ -65,18 +68,23 @@ struct cstring_public_t
     void (*append_cstring)(CString *dest, CString *src);    //dest += src
     void (*append_string)(CString *dest, char *src);    //dest += src
     void (*append_char)(CString *dest, char c); //dest += c
+    void (*append_int)(CString *dest, int64_t num);
+    void (*append_float)(CString* dest, double num, unsigned char digits);
     void (*swap_cstring)(CString *l, CString *r);       //l <-> r
     void (*swap_string)(CString *l, char *r);   //l <-> r
+    void (*reverse)(CString* str);
+    void (*reverse_range)(CString* str, size_t start, size_t end);  //reverse [start, end)
     size_t (*find)(CString *str, char *pattern);    //find the first occurrence of pattern string in str
     size_t (*rfind)(CString *str, char *pattern);   //find the last occurrence of pattern string in str
     size_t (*find_first_of)(CString* str, char *pattern);    //find the first occurrence of characters in pattern
     size_t (*find_last_of)(CString* str, char *pattern);     //find the last occurrence of characters in pattern
     size_t (*find_first_of_after_pos)(CString *str, char *pattern, size_t pos);//find the first occurrence of characters in pattern after pos position in str
     size_t (*find_last_of_before_pos)(CString *str, char *pattern, size_t pos); //find the last occurrence of characters in pattern before pos position in str
+    size_t (*find_and_replace)(CString* str, char* to_replace);
     size_t (*count_occurrence)(CString *str, char c);    //count #times 'c' appeared in the string
 
-    bool (*replace_string)(CString *dest, char *pattern);   //find pattern in dest and replace dest
-    bool (*replace_cstring)(CString *dest, CString *pattern);   //find pattern in dest and replace dest
+    void (*replace_string)(CString *dest, char *original, char* to_replace);   //find pattern in dest and replace dest
+    void (*replace_cstring)(CString *dest, CString *original, CString* to_replace);   //find pattern in dest and replace dest
 
     /*Compare*/
     bool (*is_equal)(CString* str1, CString* str2);     //str1 =?= str2
@@ -90,7 +98,7 @@ struct cstring_public_t
 
     /*serialize*/
     bool (*serialize)(CString *str, FILE *f);
-    bool (*serialize_to)(CString *str, char *fileName);
+    bool (*serialize_to)(CString *str, char *fileName, bool append);
 
     /*print*/
     void (*puts)(CString *str);
@@ -101,6 +109,26 @@ CString new_CString(const char *data);
 CString empty_CString();
 CString move_to_CString(char *data);
 CString new_CString_by(char* start, char* end);
+
+/**
+ * @brief: Read one line from stdin
+ * @return: a CString
+ */
+CString getline();
+
+/**
+ * @brief: Read from stdin, until [n] characters
+ * @param n: numbers of chars to read from stdin, excluding null
+ * @return: a CString
+ */
+CString get_char_n(size_t n);
+
+/**
+ * @brief: Read from stdin, until the character [stop_flag] is encountered
+ * @param stop_flag: the character to stop
+ * @return a CString
+ */
+CString get_until(char stop_flag);
 
 /*Destructor*/
 void delete_CString(CString *str);
@@ -116,3 +144,6 @@ CString to_cstring(void *data, TYPE_ENUM type);
 
 /*Check CString info*/
 void print_info(const CString* str);
+
+/*TEST*/
+bool TEST(const CString* src, const char* expected);

@@ -128,7 +128,7 @@ std::vector<int> boyer_moore(std::string_view text, std::string_view pattern) //
     auto char_table = make_char_table(text);
     auto offset_table = make_offset_table(pattern);
     int shift = 0;
-    while (shift + pattern.length() <= text.length())
+    while (shift + pattern.length() <= text.length()) 
     {
         if (auto shifted_text = std::string_view{ text.data() + shift, pattern.length() }; shifted_text != pattern)
             shift += std::max(bad_char_rule(shifted_text, pattern, char_table), good_suffix_rule(shifted_text, pattern, offset_table));

@@ -24,7 +24,7 @@ void TEST_SERIALIZE()
     puts(__FUNCTION__);
     CString test = new_CString("Hello world");
     test.public->puts(&test);
-    test.public->serialize_to(&test, "serialize_test.txt");
+    test.public->serialize_to(&test, "serialize_test.txt", true);
 
     CString test2 = CString_deserialize_from("serialize_test.txt");
     test2.public->puts(&test2);
@@ -101,7 +101,49 @@ void TEST_APPEND_CHAR()
     delete_CString(&test1);
 }
 
+void TEST_REVERSE()
+{
+    puts(__FUNCTION__ );
+    CString test1=new_CString("A string to be reversed");
+    test1.public->reverse(&test1);
+
+    print_info(&test1);
+    delete_CString(&test1);
+}
+
+void TEST_GET_UNTIL()
+{
+    puts(__FUNCTION__ );
+    CString test=get_until(' ');
+
+    print_info(&test);
+    delete_CString(&test);
+}
+
+//void to_string(void* src, TYPE_ENUM type)
+//{
+//    char buffer[20];
+//    switch (type)
+//    {
+//    case int_Type:
+//        sprintf(buffer, "%d", *(int*)src);
+//        break;
+//    case float_Type:
+//    case double_Type:
+//    case unsigned_int_Type:
+//    case short_Type:
+//        ;
+//    }
+//    puts(buffer);
+//}
+
+void TEST_APPEND_INT()
+{
+    puts(__FUNCTION__ );
+
+}
+
 int main()
 {
-    TEST_MOVE();
+    INT64_MAX
 }

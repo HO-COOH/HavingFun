@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/a.h
+b.h
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/b.h
+
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/b.h
+a.h
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/a.h
+
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/main.c
+a.h
+C:/Users/Peter/Documents/HavingFun/Cyclic Include/a.h
+

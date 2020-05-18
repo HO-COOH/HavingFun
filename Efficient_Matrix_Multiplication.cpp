@@ -40,6 +40,7 @@ public:
     [[nodiscard]] Size get_size() const { return {rows, columns}; };
     [[nodiscard]] Matrix transpose() const
     {
+        Timer t{true};
         Matrix temp{columns, rows};
         for (size_t i = 0; i < rows; ++i)
         {
@@ -114,21 +115,25 @@ public:
     if (l.get_columns() != r.get_rows())
         throw Matrix::MatrixMultiplicationException{};
     const auto r_transposed = r.transpose();
+    
     Matrix m{l.get_rows(), r.get_columns()};
-
-    auto l_iter = l.cbegin();
-
-    for (size_t i = 0; i < m.get_rows(); ++i)
+    //If we only measured the time without transpose
     {
-        auto r_transposed_iter = r_transposed.cbegin();
-        for (size_t j = 0; j < m.get_columns(); ++j)
+        Timer t{true};
+        auto l_iter = l.cbegin();
+
+        for (size_t i = 0; i < m.get_rows(); ++i)
         {
-            //m[i, j] = Sum(l[i, 0-k] * r[0-k, j]) = Sum(l[i, 0-k] * r_T[j, 0-k]), where k == l.get_columns()
-            //There is a function for that in STD library
-            m(i, j) = std::inner_product(l_iter, l_iter + l.get_columns(), r_transposed_iter, 0.0f);
-            std::advance(r_transposed_iter, r_transposed.get_columns());
+            auto r_transposed_iter = r_transposed.cbegin();
+            for (size_t j = 0; j < m.get_columns(); ++j)
+            {
+                //m[i, j] = Sum(l[i, 0-k] * r[0-k, j]) = Sum(l[i, 0-k] * r_T[j, 0-k]), where k == l.get_columns()
+                //There is a function for that in STD library
+                m(i, j) = std::inner_product(l_iter, l_iter + l.get_columns(), r_transposed_iter, 0.0f);
+                std::advance(r_transposed_iter, r_transposed.get_columns());
+            }
+            std::advance(l_iter, l.get_columns());
         }
-        std::advance(l_iter, l.get_columns());
     }
     return m;
 }
@@ -238,7 +243,7 @@ int main()
     }
 }
 /*
-Possible output:
+Possible output (under GCC 9.3 -O3/ Windows)
 6851830 ms.
 6464032 ms.
 8698440 ms.
