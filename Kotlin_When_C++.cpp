@@ -52,6 +52,22 @@ constexpr bool comparable = requires(T1 const &lhs, T2 const &rhs)
     lhs == rhs;
 };
 
+template <typename l>
+struct is
+{
+    using type = std::remove_reference_t<l>;
+};
+
+template <typename T>
+struct is_impl : std::false_type
+{
+};
+
+template <typename T>
+struct is_impl<is<T>> : std::true_type
+{
+};
+
 auto when(auto expr, Else, auto ReturnResult)
 {
     return ReturnResult;
@@ -74,6 +90,14 @@ auto when(auto expr, auto case1, auto ReturnResult)
     return when(expr, Else{}, ReturnResult);
 }
 
+template <typename is_type>
+auto when(auto expr, is<is_type>, auto ReturnResult)
+{
+    if constexpr (std::is_same_v<decltype(expr), typename is<is_type>::type>)
+        return ReturnResult;
+    return decltype(ReturnResult){};
+}
+
 auto when(auto expr, auto case1, auto return1, auto case2, auto... args)
 {
     if constexpr (std::is_same_v<decltype(case1), bool>)
@@ -91,23 +115,37 @@ auto when(auto expr, auto case1, auto return1, auto case2, auto... args)
     return when(expr, case2, args...);
 }
 
+template <typename is_type>
+auto when(auto expr, is<is_type>, auto return1, auto case2, auto... args)
+{
+    if constexpr (std::is_same_v<decltype(expr), typename is<is_type>::type>)
+        return return1;
+    return when(expr, case2, args...);
+}
 
 int main()
 {
     int temperature = 10;
     puts(when((temperature),
-        Range(INT_MIN,0),   "freezing",
-        Range(1, 15),       "cold",
-        Range(16,20),       "cool",
-        Range(21, 25),      "warm",
-        Range(26,INT_MAX),  "hot",
-        Else(),             "WTF?"
-    )); //cold
+              Range(INT_MIN, 0), "freezing",
+              Range(1, 15), "cold",
+              Range(16, 20), "cool",
+              Range(21, 25), "warm",
+              Range(26, INT_MAX), "hot",
+              Else(), "WTF?")); //cold
+    // auto describe = [](auto&& obj) {
+    //     return when((obj),
+    //         1, "One"s,
+    //         "hello"s, "Greeting"s,
+    //         std::is_same_v<long, std::remove_reference_t<decltype(obj)>>, "long"s,
+    //         !std::is_same_v<std::string, std::remove_reference_t<decltype(obj)>>, "Not a string"s,
+    //         Else(), "Unknown string"s);
+    // };
     auto describe = [](auto &&obj) {
         return when((obj),
                     1, "One"s,
                     "hello"s, "Greeting"s,
-                    std::is_same_v<long, std::remove_reference_t<decltype(obj)>>, "long"s,
+                    is<long>{}, "long"s,
                     !std::is_same_v<std::string, std::remove_reference_t<decltype(obj)>>, "Not a string"s,
                     Else(), "Unknown string"s);
     };
