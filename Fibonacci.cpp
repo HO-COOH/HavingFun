@@ -2,6 +2,7 @@
 #include <chrono>
 #include <array>
 #include <vector>
+#include <numeric>
 
 class Timer
 {
@@ -53,6 +54,14 @@ uint64_t fib_non_recursive(uint64_t i)
 		pre = cur;
 	}
 	return cur;
+}
+
+/*std::adjacent_difference is also a non-recursive version */
+uint64_t fib_std_adjacent_difference(uint64_t i)
+{
+	std::vector v(i, 1ull); //first 50 numbers of fibonacci
+	std::adjacent_difference(v.begin(), v.end() - 1, v.begin() + 1, std::plus<>{});
+	return v[i - 1];
 }
 
 /*Let's try compile time constant */
@@ -122,5 +131,9 @@ int main()
 	{
 		Timer t;
 		std::cout <<"\nUsing Normal Recursive: " << fib(i) << '\n';
+	}
+	{
+		Timer t;
+		std::cout << "\nUsing std::adjacent_difference" << fib_std_adjacent_difference(i) << '\n';
 	}
 }
