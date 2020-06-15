@@ -145,5 +145,6 @@ void TEST_APPEND_INT()
 
 int main()
 {
-    INT64_MAX
+    CString str=new_CString("hello world");
+    str.public.
 }
