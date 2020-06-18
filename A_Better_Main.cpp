@@ -14,21 +14,22 @@
 */
 
 #include <vector>
-#include <string>
+//#include <string>
+#include <string_view>  //use C++17
 #include <iterator>
 #include <iostream>
 
-int my_main(std::vector<std::string> args);
+int my_main(std::vector<std::string_view> args);
 
 int main(int argc, char* argv[])
 {
-    return my_main({&argv[0], &argv[argc]});
+    return my_main(std::vector<std::string_view>{&argv[0], &argv[argc]});
 }
 
 #define main my_main
-int main(std::vector<std::string> args) //fake main(), actually my_main()
+int main(std::vector<std::string_view> args) //fake main(), actually my_main()
 {
-    std::copy(args.begin(), args.end(), std::ostream_iterator<std::string>{std::cout, "\n"});   //show the arguments
+    std::copy(args.cbegin(), args.cend(), std::ostream_iterator<std::string_view>{std::cout, "\n"});   //show the arguments
     //do other main() stuff here...
     return 0;
 }
