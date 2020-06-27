@@ -1,0 +1,17 @@
+[
+{
+  "directory": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe    -g   -std=gnu++17 -o CMakeFiles\\NiftyCounter.dir\\main.cpp.obj -c C:\\Users\\Peter\\Documents\\HavingFun\\NiftyCounter\\main.cpp",
+  "file": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/main.cpp"
+},
+{
+  "directory": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe    -g   -std=gnu++17 -o CMakeFiles\\NiftyCounter.dir\\Initializer.cpp.obj -c C:\\Users\\Peter\\Documents\\HavingFun\\NiftyCounter\\Initializer.cpp",
+  "file": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.cpp"
+},
+{
+  "directory": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe    -g   -std=gnu++17 -o CMakeFiles\\NiftyCounter.dir\\UseSingleton.cpp.obj -c C:\\Users\\Peter\\Documents\\HavingFun\\NiftyCounter\\UseSingleton.cpp",
+  "file": "C:/Users/Peter/Documents/HavingFun/NiftyCounter/UseSingleton.cpp"
+}
+]

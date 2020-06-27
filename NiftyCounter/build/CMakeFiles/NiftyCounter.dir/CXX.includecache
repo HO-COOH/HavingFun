@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.cpp
+Initializer.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.h
+new
+-
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.h
+MySingleton.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/MySingleton.h
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/MySingleton.h
+cstdio
+-
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/UseSingleton.cpp
+iostream
+-
+UseSingleton.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/UseSingleton.h
+Initializer.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.h
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/UseSingleton.h
+
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/main.cpp
+iostream
+-
+UseSingleton.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/UseSingleton.h
+Initializer.h
+C:/Users/Peter/Documents/HavingFun/NiftyCounter/Initializer.h
+
