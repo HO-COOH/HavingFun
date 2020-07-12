@@ -58,7 +58,7 @@ public:
     static Matrix make_test_matrix(size_t row, size_t col)
     {
         Matrix m{row, col};
-        std::generate(m.data, m.data + row * col, [] { static auto i = 0; return static_cast<float>(i++); });
+        std::iota(m.data, m.data + row * col, 0.0f);
         return m;
     }
     [[nodiscard]] auto cbegin() const { return data; }
