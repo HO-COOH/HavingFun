@@ -71,6 +71,11 @@
         "xmemory": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "execution": "cpp",
+        "compare": "cpp",
+        "queue": "cpp",
+        "valarray": "cpp",
+        "xhash": "cpp"
     }
 }

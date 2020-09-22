@@ -7,6 +7,8 @@
 
 #include "MySingleton.h"
 extern MyClass& singleton;
+
+template<typename T>
 class Initializer
 {
     static unsigned count;
@@ -17,6 +19,6 @@ public:
     Initializer();
     ~Initializer();
 };
-static Initializer init;
+static Initializer<MyClass> init;
 
 #endif //NIFTYCOUNTER_INITIALIZER_H
