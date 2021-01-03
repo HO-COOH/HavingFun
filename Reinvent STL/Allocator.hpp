@@ -2,6 +2,7 @@
 #include <cstddef>      //for std::size_t
 #include <new>          //for placement new
 #include <type_traits>  //for std::true_type
+#include "TypeTraits.hpp"
 #include <limits>
 
 /**
@@ -98,18 +99,3 @@ namespace details
     using DefinedValueTypeOr_t = DefinedValueTypeOr<Default, CheckHasValueType>::type;
 } // namespace details
 
-/**
- * @brief Provides the standardized way to access various properties of Allocators
- * 
- * @tparam Alloc 
- * @details The standard containers and other standard library components access allocators through this template,
- * which makes it possible to use any class type as an allocator, as long as the user-provided specialization of
- * allocator_traits implements all required functionality
- */
-template<typename Alloc>
-struct allocator_traits
-{
-public:
-    using allocator_type = Alloc;
-    using value_type = Alloc::value_type;
-};
