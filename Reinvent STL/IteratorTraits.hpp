@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include "TypeTraits.hpp"
 
 ///  Marking input iterators.
 struct input_iterator_tag { };
@@ -58,16 +59,16 @@ struct iterator_traits
         typename Iter::value_type,
         typename Iter::pointer,
         typename Iter::reference,
-        typename Iter::category,
+        typename Iter::category
     >
 >
 {
     /*Member types*/
-    using difference_type   = Iter::difference_type;
-    using value_type        = Iter::value_type;
-    using pointer           = Iter::pointer;
-    using reference         = Iter::reference;
-    using iterator_category = Iter::category;
+    using difference_type   = typename Iter::difference_type;
+    using value_type        = typename Iter::value_type;
+    using pointer           = typename Iter::pointer;
+    using reference         = typename Iter::reference;
+    using iterator_category = typename Iter::category;
 };
 
 /**

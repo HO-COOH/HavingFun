@@ -7,11 +7,21 @@
 
  * @param arg lvalue object or function
  * @return Pointer to arg
+ * @note In C++20 this is no longer implementable due to constexpr requirements
  */
 template<typename T>
-constexpr T* addressof(T& arg) noexcept
+T* addressof(T& arg) noexcept
 {
-
+    if constexpr (is_object_v<T>)
+        return reinterpret_cast<T*>(&const_cast<char&>(reinterpret_cast<const volatile char&>(arg)));
+    /* Why does it cast like this you ask?
+     * Because reinterpret_cast can add const volatile qualifiers, but cannot remove it.
+     * So reinterpret_cast it first to const volatile char& to be compatible if T is const volatile qualified.
+     * Then const_cast removes the const, so that it can be reinterpret_cast next(because reinterpret_cast cannot remove const I just mentioned :)
+     * Finally it is reinterpret_cast to T*, with the original const volatile qualifiers, if any
+     */
+    else //for reference, function, or void
+        return &arg;
 }
 /* Rvalue overload is deleted to prevent taking the address of const rvalues.
  * This is important because
@@ -35,7 +45,7 @@ private:
     
     template<typename T> using m_difference_type = typename T::difference_type;
 
-    template<typename T, typename U> using m_rebind = typename T::rebind<U>;
+    template<typename T, typename U> using m_rebind = typename T:: template rebind<U>;
 public:
     using pointer           = Ptr;
     using element_type      = detected_or_t<i_th_template_type_t<0, Ptr>, m_element_type, Ptr>;

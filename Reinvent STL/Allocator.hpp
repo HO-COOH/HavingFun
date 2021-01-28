@@ -23,16 +23,16 @@ public:
     using propagate_on_container_move_assignment = std::true_type;
 private:
     //GCC has this for allocate(), because the max_size() function is removed in C++20
-    constexpr m_max_size() const noexcept
+    constexpr auto m_max_size() const noexcept
     {
         return std::numeric_limits<size_type>::max() / sizeof(value_type);
     }
 public:
     /*Constructors*/
     allocator() noexcept = default;
-    allocator(const allocator&) noexcept = default;
+    allocator(const allocator&) noexcept{};
     template <typename U>
-    allocator(const allocator<U> &) noexcept = default;
+    allocator(const allocator<U> &) noexcept{};
 
     /*Member functions*/
 
@@ -50,15 +50,15 @@ public:
      * @param n the number of objects to allocate storage for
      * @param hint pointer to a nearby memory location
      */
-    auto allocate(std::size_t n, const void *hint = {0})
+    auto allocate(std::size_t n, const void *hint = nullptr)
     {
         if(n > m_max_size())
             throw std::bad_alloc{};
-        constexpr auto alignment = alignof(T);
+        constexpr auto alignment = static_cast<std::align_val_t>(alignof(T));
         if constexpr(alignment > alignof(std::max_align_t))
             return static_cast<T*>(::operator new(n * sizeof(T), alignment));
         else
-            return static_cast<T*>(::operator new(n * sizeof(T));
+            return static_cast<T*>(::operator new(n * sizeof(T)));
     }
 
     /**
@@ -76,26 +76,3 @@ public:
             ::operator delete(p, n * sizeof(T));
     }
 };
-
-namespace details
-{
-    template<typename T, typename = void>
-    struct HasValueType : std::false_type
-    {
-    };
-
-    template<typename T>
-    struct HasValueType<T, std::void_t<typename T::value_type>> : std::false_type
-    {
-    };
-
-    template<typename Default, typename CheckHasValueType>
-    struct DefinedValueTypeOr
-    {
-        using type = std::conditional_t<HasValueType<CheckHasValueType>::value, typename T::value_type, Default>;
-    };
-
-    template <typename Default, typename CheckHasValueType>
-    using DefinedValueTypeOr_t = DefinedValueTypeOr<Default, CheckHasValueType>::type;
-} // namespace details
-

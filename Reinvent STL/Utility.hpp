@@ -1,6 +1,7 @@
 #pragma once
 #include <array>
 #include <cstddef>
+#include "TypeTraits.hpp"
 
 /**
  * @brief A super enhanced version of the std::integer_sequence.
@@ -49,6 +50,11 @@ private:
         else
             return integer_sequence<T, Values...>{};
     }
+
+    static constexpr auto GetThis() noexcept
+    {
+        return integer_sequence<T, Ints...>{};
+    }
 public:
     using value_type = T;
 
@@ -71,7 +77,7 @@ public:
     /**
      * @brief Return the i-th element in the sequence
      */
-    static constexpr auto at(T i) noexcept
+    static constexpr auto at(unsigned i) noexcept
     {
         return to_array()[i];
     }
@@ -198,7 +204,7 @@ public:
     template<T element>
     static constexpr auto erase() noexcept
     {
-        return filter([](auto const num) { return element != num; })
+        return filter([](auto const num) { return element != num; });
     }
 
     /**
@@ -275,7 +281,7 @@ public:
      */
     static constexpr auto append() noexcept
     {
-        return *this;
+        return GetThis();
     }
 
     /**
@@ -292,6 +298,15 @@ public:
             return integer_sequence<T>{}.append(filter_impl(integer_sequence<T, Ints>{}, predicate)...);    
         else
             return integer_sequence<T>{};
+    }
+
+    template<unsigned times>
+    static constexpr auto repeat() noexcept
+    {
+        if constexpr(times == 0)
+            return integer_sequence<T>{};
+        else
+            return append(repeat<times - 1>());
     }
 };
 
@@ -326,3 +341,31 @@ using index_sequence = integer_sequence<std::size_t, Ints...>;
  */
 template<std::size_t N>
 using make_index_sequence = make_integer_sequence<std::size_t, N>;
+
+template<typename T>
+constexpr T&& forward(remove_reference_t<T>& t) noexcept
+{
+    return static_cast<T&&>(t);
+}
+
+template<typename T>
+constexpr T&& forward(remove_reference_t<T>&& t) noexcept
+{
+    static_assert(!std::is_lvalue_reference<T>::value,
+        "Can not forward an rvalue as an lvalue.");
+    return static_cast<T&&>(t);
+}
+
+/**
+ * @brief Produces an xvalue expression
+ * @param t the object to be moved
+ */
+template<typename T>
+constexpr remove_reference_t<T>&& move(T&& t) noexcept
+{
+    return static_cast<remove_reference_t<T>&&>(t);
+}
+
+/*Poor man's concepts*/
+template<typename...Condition>
+using require = enable_if_t<conjunction_v<Condition...>>;
