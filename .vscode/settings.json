@@ -76,6 +76,9 @@
         "compare": "cpp",
         "queue": "cpp",
         "valarray": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "math.h": "c",
+        "stdlib.h": "c",
+        "cstring.h": "c"
     }
 }

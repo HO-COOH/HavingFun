@@ -1,4 +1,6 @@
 #pragma once
+
+#include <type_traits>
 namespace details
 {
     template <typename T1, typename T2>
@@ -68,6 +70,17 @@ namespace details
             TypeList,
             typename TypeList::template append<Front>>;
     };
+
+    template<typename ToFind, typename... Ts>
+    struct index_of_type_impl;
+    template<typename ToFind>
+    struct index_of_type_impl<ToFind> :std::integral_constant<int, -1> {};
+    template<typename ToFind, typename... Rest>
+    struct index_of_type_impl<ToFind, ToFind, Rest...> :std::integral_constant<int, 0> {};
+    template<typename ToFind, typename Front, typename... Rest>
+    struct index_of_type_impl<ToFind, Front, Rest...> :std::integral_constant<int, 1 + index_of_type_impl<ToFind, Rest...>::value> {};
+
+
 } // namespace details
 
 template <typename... T>
@@ -76,10 +89,10 @@ struct type_list
 private:
     template <unsigned N, typename...>
     struct n_th_type_impl;
-
     template <unsigned N, typename Front, typename... Rest>
     struct n_th_type_impl<N, Front, Rest...>
     {
+        static_assert(N <= sizeof...(Rest));
         using type = typename n_th_type_impl<N - 1, Rest...>::type;
     };
     template <typename Front, typename... Rest>
@@ -88,15 +101,78 @@ private:
         using type = Front;
     };
 
+    static constexpr auto GetThis() noexcept
+    {
+        return type_list<T...>{};
+    }
+
+    
+
+    template<typename...U, typename... TypeLists>
+    static constexpr auto append_impl(type_list<U...>, TypeLists...)
+    {
+        if constexpr (sizeof...(TypeLists) == 0)
+            return type_list<T..., U...>{};
+        else
+            return typename type_list<T..., U...>::template append<TypeLists...>{};
+    }
+
+    template<typename U, typename...Rest>
+    static constexpr auto append_impl(U, Rest...)
+    {
+        return typename type_list<T..., U>::template append<Rest...>{};
+    }
+
+    static constexpr auto append_impl()
+    {
+        return GetThis();
+    }
+
+    template<typename...U, typename... TypeLists>
+    static constexpr auto prepend_impl(type_list<U...>, TypeLists...)
+    {
+        if constexpr (sizeof...(TypeLists) == 0)
+            return type_list<U..., T...>{};
+        else
+            return typename type_list<U...>::template append<TypeLists...>::template append<T...>{};
+    }
+
+    template<typename U, typename... Rest>
+    static constexpr auto prepend_impl(U, Rest...)
+    {
+        return typename type_list<U>::template append<Rest...>::template append<type_list<T...>>{};
+    }
+
+    static constexpr auto prepend_impl()
+    {
+        return GetThis();
+    }
+
+    template<int N, int Start, int End, typename...Types>
+    static constexpr auto split_impl()
+    {
+        if constexpr (N < Start)
+            return split_impl<N + 1, Start, End>();
+        else if constexpr (N >= Start && N <= End)
+            return split_impl<N + 1, Start, End, Types..., n_th_type<N>>();
+        else
+            return GetThis();
+    }
 public:
+    
+    static constexpr auto size() noexcept
+    {
+        return sizeof...(T);
+    }
+    
     template <template <typename...> typename ToType>
     using to = ToType<T...>;
 
-    template <typename U>
-    using prepend = type_list<U, T...>;
+    template <typename... U>
+    using prepend = decltype(prepend_impl(std::declval<U>()...));
 
     template <typename... U>
-    using append = type_list<T..., U...>;
+    using append = decltype(append_impl(std::declval<U>()...));
 
     using permutations = typename details::permutations_impl<sizeof...(T), type_list<T...>>::type;
 
@@ -106,7 +182,17 @@ public:
     template <typename TypeToRemove>
     using remove_type = typename details::remove_type_impl<TypeToRemove, type_list<>, T...>::type;
 
-    template <unsigned N, typename = std::enable_if_t<N<sizeof...(T)>> using n_th_type = typename n_th_type_impl<N, T...>::type;
+    template <unsigned N> 
+    using n_th_type = typename n_th_type_impl<N, T...>::type;
 
-    static constexpr auto size = sizeof...(T);
+    
+
+    template<typename ToFind>
+    static constexpr auto index_of = details::index_of_type_impl<ToFind, T...>::value;
+
+    template<typename TypeMap>
+    using transform = int;
+
+    template<typename... U>
+    friend struct type_list;
 };

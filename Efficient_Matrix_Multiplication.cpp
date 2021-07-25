@@ -227,7 +227,6 @@ int main()
     {
         Timer t{true};
         auto result = transpose_and_mul(l, r);
-
     }
     {
         Timer t{true};

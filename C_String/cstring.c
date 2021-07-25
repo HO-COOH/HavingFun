@@ -13,13 +13,13 @@
 
 CString_public global_vtable;
 
-static bool global_vtable_init=false;
+static bool global_vtable_init = false;
 static void init_global_vtable();
 
 static char* get_data(CString* str)
 {
-    if(str)
-        return str->is_small? str->data.small_string : str->data.impl.ptr;
+    if (str)
+        return str->is_small ? str->data.small_string : str->data.impl.ptr;
     THROW_INVALID_ARGUMENT_PTR_EXCEPTION;
     return NULL;
 }
@@ -29,17 +29,17 @@ static char* get_data(CString* str)
  */
 static char* get_end(CString* str)
 {
-    if(str)
+    if (str)
     {
-        if(str->is_small)
+        if (str->is_small)
         {
-            char const* start=get_data(str);
-            char const* pos=start;
-            while(*pos!='\0'&&pos-start<=SMALL_STRING)
+            char const* start = get_data(str);
+            char const* pos = start;
+            while (*pos != '\0' && pos - start <= SMALL_STRING)
                 ++pos;
             return pos;
         }
-        return &str->data.impl.ptr[str->data.impl.length-1];
+        return &str->data.impl.ptr[str->data.impl.length - 1];
     }
     THROW_NULL_PARAM_EXCEPTION;
     return NULL;
@@ -49,18 +49,18 @@ static char* get_end(CString* str)
  * */
 static CString_public* get_vtable()
 {
-    if(!global_vtable_init)
+    if (!global_vtable_init)
         init_global_vtable();
     return &global_vtable;
 }
 
 static size_t length(CString* str)
 {
-    if(str)
+    if (str)
     {
-        if(str->is_small)
+        if (str->is_small)
             return strlen(str->data.small_string);
-        return str->data.impl.length-1;
+        return str->data.impl.length - 1;
     }
     THROW_NULL_PARAM_EXCEPTION;
     return 0;
@@ -68,15 +68,15 @@ static size_t length(CString* str)
 
 /*Constructor*/
 
-/**@brief: internal function 
+/**@brief: internal function
  * @param length: must be a valid value
  */
 static void copy_data(CString* temp, const char* src, int length)
 {
-    if(length<=SMALL_STRING_LENGTH)
+    if (length <= SMALL_STRING_LENGTH)
     {
         temp->is_small = true;
-        strcpy_s(temp->data.small_string, length+1, src);  
+        strcpy_s(temp->data.small_string, length + 1, src);
     }
     else
     {
@@ -84,27 +84,27 @@ static void copy_data(CString* temp, const char* src, int length)
         temp->data.impl.capacity = length + 1;
         temp->data.impl.length = length + 1;
         temp->data.impl.ptr = malloc(length + 1);
-        strcpy_s(temp->data.impl.ptr, length+1, src);
+        strcpy_s(temp->data.impl.ptr, length + 1, src);
     }
     temp->public = &global_vtable;
 }
 
-CString new_CString(const char *data)
+CString new_CString(const char* data)
 {
     CString temp;
-    if(data!=NULL)
+    if (data != NULL)
     {
         copy_data(&temp, data, strlen(data));
     }
     else
     {
-        temp.data.small_string[0]='\0';
-        temp.is_small=true;
+        temp.data.small_string[0] = '\0';
+        temp.is_small = true;
     }
-    if(!global_vtable_init)
+    if (!global_vtable_init)
         init_global_vtable();
-    temp.public=&global_vtable;
-    temp.is_moved=false;
+    temp.public = &global_vtable;
+    temp.is_moved = false;
     return temp;
 }
 
@@ -118,27 +118,27 @@ CString move_to_CString(char* data)
     CString temp;
     temp.is_small = false;
     temp.data.impl.ptr = data;
-    temp.data.impl.length=strlen(data)+1;
+    temp.data.impl.length = strlen(data) + 1;
     temp.data.impl.capacity = temp.data.impl.length;
     temp.public = &global_vtable;
-    temp.is_moved=true;
+    temp.is_moved = true;
     return temp;
 }
 
 CString new_CString_by(char* start, char* end)
 {
-    if(start==NULL || start==end)
+    if (start == NULL || start == end)
         return empty_CString();
     else    //start != NULL
     {
-        if(end==NULL)   //start != NULL, end == NULL
+        if (end == NULL)   //start != NULL, end == NULL
             return new_CString(start);
-        if(end<start)   // end < start
+        if (end < start)   // end < start
             return new_CString_by(end, start);
         size_t length = end - start;
         CString temp;
         copy_data(&temp, start, length);
-        temp.is_moved=false;
+        temp.is_moved = false;
         return temp;
     }
 }
@@ -149,14 +149,14 @@ CString getline()
 }
 
 /*Destructor*/
-void delete_CString(CString *str)
+void delete_CString(CString* str)
 {
-    if(str!=NULL && !str->is_small && !str->is_moved)
+    if (str != NULL && !str->is_small && !str->is_moved)
     {
-        if(str->data.impl.ptr)
+        if (str->data.impl.ptr)
         {
             free(str->data.impl.ptr);
-            str->data.impl.capacity=0;
+            str->data.impl.capacity = 0;
             str->data.impl.length = 0;
             str->is_small = true;
         }
@@ -166,21 +166,21 @@ void delete_CString(CString *str)
 }
 
 /*Deserialize*/
-CString CString_deserialize(FILE *f)
+CString CString_deserialize(FILE* f)
 {
-    if(f!=NULL)
+    if (f != NULL)
     {
         CString temp;
-        temp.is_moved=false;
-        if(fread(&temp, sizeof(temp), 1, f)!=1)
+        temp.is_moved = false;
+        if (fread(&temp, sizeof(temp), 1, f) != 1)
             THROW_FILE_IO_EXCEPTION;
-        if(global_vtable_init==false)
+        if (global_vtable_init == false)
             init_global_vtable();
         temp.public = &global_vtable;
-        if(!temp.is_small)
+        if (!temp.is_small)
         {
             const size_t capacity = temp.data.impl.capacity;
-            temp.data.impl.ptr=malloc(capacity);
+            temp.data.impl.ptr = malloc(capacity);
             fread(temp.data.impl.ptr, 1, temp.data.impl.capacity, f);
         }
         return temp;
@@ -191,41 +191,41 @@ CString CString_deserialize(FILE *f)
 
 CString CString_deserialize_from(char* fileName)
 {
-    if(fileName)
+    if (fileName)
         return CString_deserialize(fopen(fileName, "rb"));
     THROW_FILE_IO_EXCEPTION;
     return empty_CString();
 }
 
-CString line_to_CString(FILE *f)
+CString line_to_CString(FILE* f)
 {
-    if(f!=NULL)
+    if (f != NULL)
     {
         long pos = ftell(f);
-        size_t count=0;
-        while(fgetc(f)!='\n')
+        size_t count = 0;
+        while (fgetc(f) != '\n')
             ++count;
         fseek(f, pos, SEEK_SET);
         CString temp;
-        temp.is_moved=false;
-        if(count<=SMALL_STRING_LENGTH)
+        temp.is_moved = false;
+        if (count <= SMALL_STRING_LENGTH)
         {
-            temp.is_small=true;
+            temp.is_small = true;
             fread(temp.data.small_string, 1, count, f);
             temp.data.small_string[count] = '\0';
         }
         else
         {
-            temp.is_small=false;
-            temp.data.impl.capacity=count+1;
-            temp.data.impl.length=count+1;
-            temp.data.impl.ptr=malloc(count+1);
+            temp.is_small = false;
+            temp.data.impl.capacity = count + 1;
+            temp.data.impl.length = count + 1;
+            temp.data.impl.ptr = malloc(count + 1);
             fread(temp.data.impl.ptr, 1, count, f);
             temp.data.impl.ptr[count] = '\0';
-        }            
-        if(!global_vtable_init)
-                init_global_vtable();
-        temp.public=&global_vtable;
+        }
+        if (!global_vtable_init)
+            init_global_vtable();
+        temp.public = &global_vtable;
         fclose(f);
         return temp;
     }
@@ -235,7 +235,7 @@ CString line_to_CString(FILE *f)
 
 CString line_to_CString_from(char* fileName)
 {
-    if(fileName)
+    if (fileName)
         return line_to_CString(fopen(fileName, "r"));
     THROW_FILE_IO_EXCEPTION;
     return empty_CString();
@@ -307,11 +307,11 @@ CString line_to_CString_from(char* fileName)
 
 static void swap_cstring(CString* l, CString* r)
 {
-    if(l && r)
+    if (l && r)
     {
-        CString temp=*l;
-        *l=*r;
-        *r=temp;
+        CString temp = *l;
+        *l = *r;
+        *r = temp;
     }
     else
         THROW_NULL_PARAM_EXCEPTION;
@@ -319,13 +319,13 @@ static void swap_cstring(CString* l, CString* r)
 
 static bool empty(CString* str)
 {
-    if(str!=NULL)
+    if (str != NULL)
     {
-        if(str->is_small)
-            return str->data.small_string[0]=='\0';
-        if(str->data.impl.ptr!=NULL)
+        if (str->is_small)
+            return str->data.small_string[0] == '\0';
+        if (str->data.impl.ptr != NULL)
         {
-            if(str->data.impl.length==0 && str->data.impl.ptr[0]=='\0')
+            if (str->data.impl.length == 0 && str->data.impl.ptr[0] == '\0')
                 return true;
         }
         //str is not small, but nullptr
@@ -338,31 +338,31 @@ static bool empty(CString* str)
 
 
 
- size_t bytes(CString* str)
- {
-     if(str)
-     {
-         if(str->is_small)
-             return SMALL_STRING;
-         return str->data.impl.capacity;
-     }
-     THROW_NULL_PARAM_EXCEPTION;
-     return 0;
- }
+size_t bytes(CString* str)
+{
+    if (str)
+    {
+        if (str->is_small)
+            return SMALL_STRING;
+        return str->data.impl.capacity;
+    }
+    THROW_NULL_PARAM_EXCEPTION;
+    return 0;
+}
 
 static CString substr(CString* str, size_t pos)
 {
-    if(str)
+    if (str)
     {
-        if(pos>=length(str))
+        if (pos >= length(str))
         {
             THROW_EXCEPTION("Exception: invalid position for substr()!\n");
             return empty_CString();
         }
         else
         {
-            if((str->is_small && pos<=SMALL_STRING) || (!str->is_small))
-                return new_CString(get_data(str)+pos);
+            if ((str->is_small && pos <= SMALL_STRING) || (!str->is_small))
+                return new_CString(get_data(str) + pos);
         }
     }
     else
@@ -372,62 +372,62 @@ static CString substr(CString* str, size_t pos)
     }
 }
 
- static void resize(CString* str, size_t newSize)
- {
-     if(str!=NULL)
-     {
-         if(newSize<=SMALL_STRING)
-         {
-             if(str->is_small)
-                 return;
-             //long string -> small string
-             strcpy_s(str->data.small_string, SMALL_STRING_LENGTH ,str->data.impl.ptr);
-             str->is_small=true;
-         }
-         else   //long string -> long string
-         {
-             if(!str->data.impl.ptr)
-             {
-                 THROW_NULL_PTR_EXCEPTION;
-                 return;
-             }
-             str->data.impl.ptr=realloc(str->data.impl.ptr, newSize);
-             str->data.impl.length=strlen(str->data.impl.ptr)+1;
-             str->data.impl.capacity=newSize;
-         }
-     }
-     else
-         THROW_INVALID_ARGUMENT_PTR_EXCEPTION;
- }
+static void resize(CString* str, size_t newSize)
+{
+    if (str != NULL)
+    {
+        if (newSize <= SMALL_STRING)
+        {
+            if (str->is_small)
+                return;
+            //long string -> small string
+            strcpy_s(str->data.small_string, SMALL_STRING_LENGTH, str->data.impl.ptr);
+            str->is_small = true;
+        }
+        else   //long string -> long string
+        {
+            if (!str->data.impl.ptr)
+            {
+                THROW_NULL_PTR_EXCEPTION;
+                return;
+            }
+            str->data.impl.ptr = realloc(str->data.impl.ptr, newSize);
+            str->data.impl.length = strlen(str->data.impl.ptr) + 1;
+            str->data.impl.capacity = newSize;
+        }
+    }
+    else
+        THROW_INVALID_ARGUMENT_PTR_EXCEPTION;
+}
 
 /**@brief: Internal function for toggling upper and lower case
  */
 static void toggle_letter(CString* str, bool upper)
 {
-    if(str!=NULL)
+    if (str != NULL)
     {
-        char* start, *end;
-        if(str->is_small)
+        char* start, * end;
+        if (str->is_small)
         {
-            start=str->data.small_string;
-            end=str->data.small_string+SMALL_STRING;
+            start = str->data.small_string;
+            end = str->data.small_string + SMALL_STRING;
         }
         else
         {
-            start=str->data.impl.ptr;
-            end=str->data.impl.ptr + str->data.impl.length;
+            start = str->data.impl.ptr;
+            end = str->data.impl.ptr + str->data.impl.length;
         }
-        while(start!=end)
+        while (start != end)
         {
-            if(upper)
+            if (upper)
             {
-                if(*start<='z'&& *start>='a')
-                    *start-=('a'-'A');
+                if (*start <= 'z' && *start >= 'a')
+                    *start -= ('a' - 'A');
             }
             else
             {
-                if(*start<='Z' && *start>='A')
-                    *start+=('a'-'A');
+                if (*start <= 'Z' && *start >= 'A')
+                    *start += ('a' - 'A');
             }
             ++start;
         }
@@ -445,45 +445,45 @@ static void to_lower(CString* str)
 }
 
 
- static bool reserve_bytes(CString* str, size_t bytes)
- {
-     if(str!=NULL)
-     {
-         if(bytes>=SMALL_STRING)
-         {
-             str->is_small=false;
-             if(str->is_small)
-             {
-                 char temp[SMALL_STRING];
-                 memcpy(temp, str->data.small_string, SMALL_STRING);
-                 str->is_small=false;
-                 str->data.impl.ptr=malloc(bytes);
-                 if(str->data.impl.ptr) //malloc success
-                 {
-                     str->data.impl.capacity = bytes;
-                     strcpy(str->data.impl.ptr, temp);
-                     return true;
-                 }
-                 return false;
-             }
-             else
-             {
-                 if(str->data.impl.capacity>=bytes)
-                     return true;
-                 str->data.impl.ptr = realloc(str->data.impl.ptr, bytes);
-                 if(str->data.impl.ptr)
-                 {
-                     str->data.impl.capacity = bytes;
-                     return true;
-                 }
-                 return false;
-             }
-         }
-         return true;
-     }
-     THROW_NULL_PARAM_EXCEPTION;
-     return false;
- }
+static bool reserve_bytes(CString* str, size_t bytes)
+{
+    if (str != NULL)
+    {
+        if (bytes >= SMALL_STRING)
+        {
+            str->is_small = false;
+            if (str->is_small)
+            {
+                char temp[SMALL_STRING];
+                memcpy(temp, str->data.small_string, SMALL_STRING);
+                str->is_small = false;
+                str->data.impl.ptr = malloc(bytes);
+                if (str->data.impl.ptr) //malloc success
+                {
+                    str->data.impl.capacity = bytes;
+                    strcpy(str->data.impl.ptr, temp);
+                    return true;
+                }
+                return false;
+            }
+            else
+            {
+                if (str->data.impl.capacity >= bytes)
+                    return true;
+                str->data.impl.ptr = realloc(str->data.impl.ptr, bytes);
+                if (str->data.impl.ptr)
+                {
+                    str->data.impl.capacity = bytes;
+                    return true;
+                }
+                return false;
+            }
+        }
+        return true;
+    }
+    THROW_NULL_PARAM_EXCEPTION;
+    return false;
+}
 
 /**
  * @brief: Internal function
@@ -492,46 +492,46 @@ static void to_lower(CString* str)
  */
 static void expand(CString* dest, int size)
 {
-    if(dest->is_small && length(dest)+size <=SMALL_STRING)
+    if (dest->is_small && length(dest) + size <= SMALL_STRING)
         return;
-    dest->data.impl.ptr=realloc(dest->data.impl.ptr, dest->data.impl.length+size);
-    dest->data.impl.capacity+=size;
+    dest->data.impl.ptr = realloc(dest->data.impl.ptr, dest->data.impl.length + size);
+    dest->data.impl.capacity += size;
 }
 
 static void append_char(CString* dest, char c)
 {
-    if(dest && c!='\0')
+    if (dest && c != '\0')
     {
-        resize(dest, length(dest)+2);
-        char* previous_end=get_end(dest);
-        *previous_end=c;
+        resize(dest, length(dest) + 2);
+        char* previous_end = get_end(dest);
+        *previous_end = c;
         ++dest->data.impl.length;
-        *(previous_end+1)='\0';
+        *(previous_end + 1) = '\0';
     }
 }
 
 static void append_string(CString* dest, char* src)
 {
-    const int to_append_length=strlen(src);
-    if(dest && src && strlen(src)!=0)
+    const int to_append_length = strlen(src);
+    if (dest && src && strlen(src) != 0)
     {
         expand(dest, to_append_length);
         strcpy(get_data(dest), src);
-        dest->data.impl.length+=to_append_length;
+        dest->data.impl.length += to_append_length;
     }
 }
 
 static void reverse(CString* str)
 {
-    if(str)
+    if (str)
     {
-        char* data=get_data(str);
-        const size_t str_length=length(str);
-        for(size_t i=0; i<str_length/2; ++i)
+        char* data = get_data(str);
+        const size_t str_length = length(str);
+        for (size_t i = 0; i < str_length / 2; ++i)
         {
-            const char tmp=data[i];
-            data[i]=data[str_length-i-1];
-            data[str_length-i-1]=tmp;
+            const char tmp = data[i];
+            data[i] = data[str_length - i - 1];
+            data[str_length - i - 1] = tmp;
         }
         return;
     }
@@ -540,19 +540,19 @@ static void reverse(CString* str)
 
 static void reverse_range(CString* str, size_t start, size_t end)
 {
-    if(str && start < end)
+    if (str && start < end)
     {
-        char* data=get_data(str);
-        if(end-start>=length(str))
+        char* data = get_data(str);
+        if (end - start >= length(str))
         {
             THROW_INVALID_ARGUMENT_PTR_EXCEPTION;
             return;
         }
-        for(size_t i=start, j=0; i<(end-start)/2; ++i, ++j)
+        for (size_t i = start, j = 0; i < (end - start) / 2; ++i, ++j)
         {
-            const char tmp=data[i];
-            data[i]=data[end-j-1];
-            data[end-j-1]=tmp;
+            const char tmp = data[i];
+            data[i] = data[end - j - 1];
+            data[end - j - 1] = tmp;
         }
         return;
     }
@@ -561,13 +561,13 @@ static void reverse_range(CString* str, size_t start, size_t end)
 
 static void append_int(CString* dest, int64_t num)
 {
-    if(dest)
+    if (dest)
     {
-//        char digits = 0;
-//        int64_t temp = num;
-//        while (temp /= 10)
-//            ++digits;
-        //char buffer[digits + 1 + (num >= 0 ? 0 : 1)];    //VLA warning!
+        //        char digits = 0;
+        //        int64_t temp = num;
+        //        while (temp /= 10)
+        //            ++digits;
+                //char buffer[digits + 1 + (num >= 0 ? 0 : 1)];    //VLA warning!
         char buffer[25];    //ENOUGH for any integer
         sprintf(buffer, "%lld", num);
         append_string(dest, buffer);
@@ -579,15 +579,15 @@ static void append_int(CString* dest, int64_t num)
 static void append_float(CString* dest, double num, unsigned char digits)
 {
     /*naive implementation, only works if the integer part can be stored in a int64_t */
-    if(dest)
+    if (dest)
     {
         char buffer[digits + 1];
         //first extract the integer part
-        int64_t int_part=(int64_t)num;
+        int64_t int_part = (int64_t)num;
         append_int(dest, int_part);
-        double float_part=num-(double)int_part;
-        buffer[0]='.';
-        sprintf(buffer, "%lld", (int64_t) (float_part*pow(10, digits)));
+        double float_part = num - (double)int_part;
+        buffer[0] = '.';
+        sprintf(buffer, "%lld", (int64_t)(float_part * pow(10, digits)));
         append_string(dest, buffer);
     }
     THROW_INVALID_ARGUMENT_PTR_EXCEPTION;
@@ -628,14 +628,14 @@ static void append_float(CString* dest, double num, unsigned char digits)
 
 size_t count_occurrence(CString* str, char c)
 {
-    if(str)
+    if (str)
     {
-        char* start=get_data(str);
-        char* end=get_end(str);
-        size_t count=0;
-        while(start++!=end)
+        char* start = get_data(str);
+        char* end = get_end(str);
+        size_t count = 0;
+        while (start++ != end)
         {
-            if(*start==c)
+            if (*start == c)
                 ++count;
         }
         return count;
@@ -645,28 +645,28 @@ size_t count_occurrence(CString* str, char c)
 }
 
 
-static size_t * preprocess(const char* pattern)
+static size_t* preprocess(const char* pattern)
 {
-    const size_t length=strlen(pattern)+1;
-    size_t * lps=malloc(sizeof(size_t)*length);
-    lps[0]=0;
-    size_t lps_prev=0;
-    size_t i=1;
-    while (i<length)
+    const size_t length = strlen(pattern) + 1;
+    size_t* lps = malloc(sizeof(size_t) * length);
+    lps[0] = 0;
+    size_t lps_prev = 0;
+    size_t i = 1;
+    while (i < length)
     {
-        if (pattern[i]==pattern[lps_prev])
+        if (pattern[i] == pattern[lps_prev])
         {
             ++lps_prev;
-            lps[i]=lps_prev;
+            lps[i] = lps_prev;
             ++i;
         }
         else
         {
-            if(lps_prev!=0)
-                lps_prev=lps[lps_prev-1];
+            if (lps_prev != 0)
+                lps_prev = lps[lps_prev - 1];
             else
             {
-                lps[i]=0;
+                lps[i] = 0;
                 ++i;
             }
         }
@@ -676,31 +676,31 @@ static size_t * preprocess(const char* pattern)
 
 size_t find(CString* str, char* pattern)
 {
-    if(str && pattern)
+    if (str && pattern)
     {
-        const size_t pattern_length=strlen(pattern);
-        const size_t text_length=length(str);
-        size_t *lps=preprocess(pattern);
+        const size_t pattern_length = strlen(pattern);
+        const size_t text_length = length(str);
+        size_t* lps = preprocess(pattern);
 
-        size_t i=0; //for text
-        size_t j=0; //for pattern
+        size_t i = 0; //for text
+        size_t j = 0; //for pattern
 
-        char* ptr=get_data(str);
-        while(i<text_length)
+        char* ptr = get_data(str);
+        while (i < text_length)
         {
-            if(pattern[j]==ptr[i])
+            if (pattern[j] == ptr[i])
             {
                 ++i;
                 ++j;
             }
             else
             {
-                if(j == pattern_length)
-                    return i-pattern_length;
+                if (j == pattern_length)
+                    return i - pattern_length;
                 else
                 {
-                    if(j!=0)
-                        j=lps[j-1];
+                    if (j != 0)
+                        j = lps[j - 1];
                     else
                         ++i;
                 }
@@ -713,8 +713,8 @@ size_t find(CString* str, char* pattern)
 
 static void replace_string(CString* dest, char* original, char* to_replace)
 {
-    size_t index=find(dest, original);
-    if(index!=CString_npos)
+    size_t index = find(dest, original);
+    if (index != CString_npos)
     {
 
     }
@@ -723,17 +723,17 @@ static void replace_string(CString* dest, char* original, char* to_replace)
 /*Serialize*/
 static bool serialize(CString* str, FILE* f)
 {
-    if(str && f)
+    if (str && f)
     {
-        if(fwrite(str, sizeof(CString), 1, f)!=1)
-        {    
+        if (fwrite(str, sizeof(CString), 1, f) != 1)
+        {
             THROW_FILE_IO_EXCEPTION;
             fclose(f);
             return false;
         }
-        if(!str->is_small)
+        if (!str->is_small)
         {
-            if(str->data.impl.ptr || fwrite(str->data.impl.ptr, 1, str->data.impl.capacity, f)!=str->data.impl.capacity)
+            if (str->data.impl.ptr || fwrite(str->data.impl.ptr, 1, str->data.impl.capacity, f) != str->data.impl.capacity)
             {
                 THROW_FILE_IO_EXCEPTION;
                 fclose(f);
@@ -749,9 +749,9 @@ static bool serialize(CString* str, FILE* f)
 }
 static bool serialize_to(CString* str, char* fileName, bool append)
 {
-    if(fileName)
+    if (fileName)
     {
-        FILE *f = fopen(fileName, append? "ab":"wb");
+        FILE* f = fopen(fileName, append ? "ab" : "wb");
         return serialize(str, f);
     }
     THROW_FILE_IO_EXCEPTION;
@@ -760,13 +760,13 @@ static bool serialize_to(CString* str, char* fileName, bool append)
 
 static void put_cstring(CString* str)
 {
-    if(str!=NULL)
+    if (str != NULL)
     {
-        if(str->is_small)
+        if (str->is_small)
             puts(str->data.small_string);
         else
         {
-            if(str->data.impl.ptr!=NULL)
+            if (str->data.impl.ptr != NULL)
                 puts(str->data.impl.ptr);
             else
                 THROW_NULL_PTR_EXCEPTION;
@@ -777,88 +777,88 @@ static void put_cstring(CString* str)
 
 
 
- static bool is_equal(CString* str1, CString* str2)
- {
-    return strcmp(get_data(str1), get_data(str2))==0;
- }
+static bool is_equal(CString* str1, CString* str2)
+{
+    return strcmp(get_data(str1), get_data(str2)) == 0;
+}
 
- static bool is_smaller(CString* str1, CString* str2)    //str1 < str2
- {
-    return strcmp(get_data(str1), get_data(str2)) <0;
+static bool is_smaller(CString* str1, CString* str2)    //str1 < str2
+{
+    return strcmp(get_data(str1), get_data(str2)) < 0;
 
- }
+}
 
- static bool is_bigger(CString* str1, CString* str2)
- {
-    return strcmp(get_data(str1), get_data(str2))>0;
- }
+static bool is_bigger(CString* str1, CString* str2)
+{
+    return strcmp(get_data(str1), get_data(str2)) > 0;
+}
 
- static CStringArray split_by_char(CString* str, char delim)
- {
-     if(str!=NULL && delim!='\0')
-     {
-         const char* start=get_data(str);
-         const char* current=start;
-         int occurrence=0;
-         while(*current!='\0')
-         {
-             if(*current==delim)
-                 ++occurrence;
-             ++current;
-         }
-         CStringArray array={.count=occurrence, .arr=malloc(sizeof(CString) * occurrence)};
-         current=start;
-         int i=0;
-         while(*current!='\0')
-         {
-             if (*current == delim)
-                 array.arr[i++] = new_CString_by(start, current);
-             ++current;
-             start = current;
-         }
-         return array;
-     }
-     CStringArray empty_result={.count=0, .arr=NULL};
-     return empty_result;
- }
+static CStringArray split_by_char(CString* str, char delim)
+{
+    if (str != NULL && delim != '\0')
+    {
+        const char* start = get_data(str);
+        const char* current = start;
+        int occurrence = 0;
+        while (*current != '\0')
+        {
+            if (*current == delim)
+                ++occurrence;
+            ++current;
+        }
+        CStringArray array = { .count = occurrence, .arr = malloc(sizeof(CString) * occurrence) };
+        current = start;
+        int i = 0;
+        while (*current != '\0')
+        {
+            if (*current == delim)
+                array.arr[i++] = new_CString_by(start, current);
+            ++current;
+            start = current;
+        }
+        return array;
+    }
+    CStringArray empty_result = { .count = 0, .arr = NULL };
+    return empty_result;
+}
 
 void init_global_vtable()
 {
-    global_vtable_init=true;
+    global_vtable_init = true;
     // global_vtable.assign_string=&assign_string;
     // global_vtable.assign_cstring=&assign_cstring;
-    global_vtable.substr=&substr;
+    global_vtable.substr = &substr;
     global_vtable.to_upper = &to_upper;
     global_vtable.to_lower = &to_lower;
     global_vtable.serialize = &serialize;
     global_vtable.serialize_to = &serialize_to;
     global_vtable.empty = &empty;
-    global_vtable.bytes=&bytes;
-    global_vtable.length=&length;
-    global_vtable.swap_cstring=&swap_cstring;
-    global_vtable.resize=&resize;
-    global_vtable.is_equal=&is_equal;
-    global_vtable.is_bigger=&is_bigger;
-    global_vtable.is_smaller=&is_smaller;
-    global_vtable.split_by_char=&split_by_char;
-    global_vtable.append_char=&append_char;
-    global_vtable.append_string=&append_string;
-    global_vtable.count_occurrence=&count_occurrence;
-    global_vtable.reverse=&reverse;
-    global_vtable.reverse_range=&reverse_range;
+    global_vtable.bytes = &bytes;
+    global_vtable.length = &length;
+    global_vtable.swap_cstring = &swap_cstring;
+    global_vtable.resize = &resize;
+    global_vtable.is_equal = &is_equal;
+    global_vtable.is_bigger = &is_bigger;
+    global_vtable.is_smaller = &is_smaller;
+    global_vtable.split_by_char = &split_by_char;
+    global_vtable.append_char = &append_char;
+    global_vtable.append_string = &append_string;
+    global_vtable.count_occurrence = &count_occurrence;
+    global_vtable.reverse = &reverse;
+    global_vtable.reverse_range = &reverse_range;
 
-    global_vtable.puts=&put_cstring;
+    global_vtable.puts = &put_cstring;
 }
 
 void print_info(const CString* str)
 {
-    if(str)
-        printf("CString: %s\t length/capacity(include terminator): %d / %d moved: %s\n", get_data(str), length(str)+1 , bytes(str), str->is_moved? "true": "false");
+    if (str)
+        printf("CString: %s\t length/capacity(include terminator): %d / %d moved: %s\n", get_data(str), length(str) + 1, bytes(str), str->is_moved ? "true" : "false");
 }
 
 bool TEST(const CString* src, const char* expected)
 {
-    if(memcmp(get_data(src), expected, strlen(expected)+1)!=0)
+    if (memcmp(get_data(src), expected, strlen(expected) + 1) != 0)
     {
         THROW_EXCEPTION("Error!");
         return false;
@@ -870,71 +870,71 @@ bool TEST(const CString* src, const char* expected)
 CString get_char_n(size_t n)
 {
     CString temp;
-    size_t i=0;
-    temp.is_moved=false;
-    if(n>SMALL_STRING_LENGTH)
+    size_t i = 0;
+    temp.is_moved = false;
+    if (n > SMALL_STRING_LENGTH)
     {
-        temp.is_small=false;
-        temp.data.impl.ptr=malloc(n+1);
-        temp.data.impl.length=n+1;
-        temp.data.impl.capacity=n+1;
-        while(i<n)
-            temp.data.impl.ptr[i++]=(char)getchar();
+        temp.is_small = false;
+        temp.data.impl.ptr = malloc(n + 1);
+        temp.data.impl.length = n + 1;
+        temp.data.impl.capacity = n + 1;
+        while (i < n)
+            temp.data.impl.ptr[i++] = (char)getchar();
     }
     else
     {
-        temp.is_small=true;
-        while(i<n)
-            temp.data.small_string[i++]=(char)getchar();
+        temp.is_small = true;
+        while (i < n)
+            temp.data.small_string[i++] = (char)getchar();
     }
-    temp.public=get_vtable();
+    temp.public = get_vtable();
     return temp;
 }
 
 CString get_until(char stop_flag)
 {
     CString temp;
-    size_t count=0;
-    bool stop=false;
-    temp.is_moved=false;
-    temp.is_small=true;
-    while(count<SMALL_STRING_LENGTH)
+    size_t count = 0;
+    bool stop = false;
+    temp.is_moved = false;
+    temp.is_small = true;
+    while (count < SMALL_STRING_LENGTH)
     {
-        char c=(char)getchar();
-        temp.data.small_string[count++]=c;
-        if(c==stop_flag)
+        char c = (char)getchar();
+        temp.data.small_string[count++] = c;
+        if (c == stop_flag)
         {
-            stop=true;
+            stop = true;
             break;
         }
     }
-    if(!stop)   //big string
+    if (!stop)   //big string
     {
         //first copy the small string part into dynamic memory
-        char* data=malloc(2*SMALL_STRING);
+        char* data = malloc(2 * SMALL_STRING);
         memcpy(data, temp.data.small_string, SMALL_STRING);
-        temp.data.impl.capacity=2*SMALL_STRING;
-        temp.data.impl.ptr=data;
-        temp.is_small=false;
+        temp.data.impl.capacity = 2 * SMALL_STRING;
+        temp.data.impl.ptr = data;
+        temp.is_small = false;
 
         //Then, the capacity will doubled everytime it is full
-        while(true)
+        while (true)
         {
-            if(count==temp.data.impl.capacity-1)
+            if (count == temp.data.impl.capacity - 1)
             {
                 temp.data.impl.ptr = realloc(temp.data.impl.ptr, 2 * (count + 1));
-                temp.data.impl.capacity*=2;
+                temp.data.impl.capacity *= 2;
             }
-            char c = (char) getchar();
+            char c = (char)getchar();
             if (c == stop_flag)
                 break;
             temp.data.impl.ptr[count++] = c;
         }
-        temp.data.impl.ptr[count+1]='\0';
-        temp.data.impl.length=strlen(temp.data.impl.ptr);
+        temp.data.impl.ptr[count + 1] = '\0';
+        temp.data.impl.length = strlen(temp.data.impl.ptr);
     }
     else
-        temp.data.small_string[count+1]='\0';
-    temp.public=get_vtable();
+        temp.data.small_string[count + 1] = '\0';
+    temp.public = get_vtable();
     return temp;
 }

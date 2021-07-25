@@ -1,12 +1,12 @@
 [
 {
-  "directory": "C:/Users/Peter/Documents/HavingFun/C_String/build",
-  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -DDEBUG  -g   -std=gnu11 -o CMakeFiles\\test.dir\\main.c.obj   -c C:\\Users\\Peter\\Documents\\HavingFun\\C_String\\main.c",
-  "file": "C:/Users/Peter/Documents/HavingFun/C_String/main.c"
+  "directory": "D:/HavingFun/C_String/build",
+  "command": "C:\\msys64\\mingw64\\bin\\g++.exe -DGTEST_LINKED_AS_SHARED_LIBRARY=1 -g -o CMakeFiles\\CStringTest.dir\\test.cpp.obj -c D:\\HavingFun\\C_String\\test.cpp",
+  "file": "D:/HavingFun/C_String/test.cpp"
 },
 {
-  "directory": "C:/Users/Peter/Documents/HavingFun/C_String/build",
-  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -DDEBUG  -g   -std=gnu11 -o CMakeFiles\\test.dir\\cstring.c.obj   -c C:\\Users\\Peter\\Documents\\HavingFun\\C_String\\cstring.c",
-  "file": "C:/Users/Peter/Documents/HavingFun/C_String/cstring.c"
+  "directory": "D:/HavingFun/C_String/build",
+  "command": "C:\\msys64\\mingw64\\bin\\gcc.exe -DGTEST_LINKED_AS_SHARED_LIBRARY=1 -g -std=gnu11 -o CMakeFiles\\CStringTest.dir\\cstring.c.obj -c D:\\HavingFun\\C_String\\cstring.c",
+  "file": "D:/HavingFun/C_String/cstring.c"
 }
 ]

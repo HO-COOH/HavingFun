@@ -3,6 +3,38 @@
 #include <cstddef>
 #include "TypeTraits.hpp"
 
+namespace details
+{
+    template<typename Iter, typename = void>
+    struct has_iterator_category : false_type {};
+
+    template<typename Iter>
+    struct has_iterator_category<Iter, void_t<typename Iter::iterator_category>> : true_type {};
+
+    // template<typename Iter>
+    
+
+    template<typename Iter, typename = void>
+    struct is_input_iterator : false_type
+    {
+    };
+
+    template<typename Iter>
+    struct is_input_iterator<Iter, decltype(declval<Iter>() != declval<Iter>(), *(declval<Iter>()), ++(declval<Iter>()), void())> : true_type {};
+
+    template<typename Iter>
+    struct is_output_iterator {};
+
+    template<typename Iter>
+    struct is_forward_iterator {};
+
+    template<typename Iter>
+    struct is_bidirectional_iterator {};
+
+    template<typename Iter>
+    struct is_random_access_iterator {};
+}
+
 ///  Marking input iterators.
 struct input_iterator_tag { };
 ///  Marking output iterators.

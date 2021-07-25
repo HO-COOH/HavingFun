@@ -1,38 +1,10 @@
 #pragma once
 #include <cstddef> //for std::nullptr_t
-/**
- * @brief The foundations of all type traits
- * 
- * @tparam Type The type of the constant
- * @tparam v The value of the constant
- */
-template<typename Type, Type v>
-struct integral_constant
-{
-    static constexpr Type value = v;
-    using value_type = Type;
-    
-    /**
-     * @brief Conversion operator
-     * 
-     * @returns The wrapped value
-     */
-    constexpr operator value_type() const noexcept
-    {
-        return value;
-    }
+#include "Constant.hpp"
 
-    /**
-     * @brief This function enables integral_constant to serve 
-     * as a source of compile-time function objects
-     * 
-     * @return The wrapped value
-     */
-    constexpr value_type operator()() const noexcept
-    {
-        return value;
-    }
-};
+template <typename...> struct common_type;
+template <typename... T> using common_type_t = typename common_type<T...>::type;
+
 
 /**
  * @brief A helper alias template for boolean constant
@@ -40,7 +12,7 @@ struct integral_constant
  * @tparam boolValue The constant boolean value
  */
 template <bool boolValue>
-using bool_constant = integral_constant<bool, boolValue>;
+using bool_constant = integral_constant<boolValue>;
 
 /**
  * @brief The type for a true bool_constant
@@ -57,7 +29,7 @@ using void_t = void;
 
 template<bool B, typename T, typename F> struct conditional { using type = T; };
 template<typename T, typename F> struct conditional<false, T, F> { using type = F; };
-template<bool B, typename T, typename F> using conditionitional_t = typename conditional<B, T, F>::type;
+template<bool B, typename T, typename F> using conditional_t = typename conditional<B, T, F>::type;
 
 template<typename T> struct is_reference      : false_type {};
 template<typename T> struct is_reference<T&>  : true_type {};
@@ -91,7 +63,7 @@ template<typename T> using remove_volatile_t = typename remove_volatile<T>::type
 template<typename T1, typename T2>      struct is_same : false_type {};
 template<typename T>                    struct is_same<T, T> : true_type {};
 template<typename T1, typename T2>      inline constexpr bool is_same_v = is_same<T1, T2>::value;
-template<typename T, typename ...Ts>    struct are_same : conditionitional_t<(is_same_v<T, Ts> && ...), true_type, false_type> {};
+template<typename T, typename ...Ts>    struct are_same : conditional_t<(is_same_v<T, Ts> && ...), true_type, false_type> {};
 template<typename T, typename ...Ts>    inline constexpr bool are_same_v = are_same<T, Ts...>::value;
 
 template<unsigned I, typename T, typename ...Ts>
@@ -346,11 +318,11 @@ struct decay
 private:
     using U = remove_reference_t<T>;
 public:
-    using type = conditionitional_t
+    using type = conditional_t
     <
         is_array_v<U>,
         remove_extent_t<U>*,
-        conditionitional_t
+        conditional_t
         <
             is_function_v<U>,
             add_pointer_t<U>,
@@ -399,12 +371,31 @@ template<typename T1, typename T2> struct common_type<T1, T2>
     using type = decay_t<decltype(false ? declval<decay_t<T1>>() : declval<decay_t<T2>>())>;
 };
 template<typename T1, typename T2, typename... Ts> struct common_type<T1, T2, Ts...> : common_type<typename common_type<T1, T2>::type, Ts...> {};
-template <typename... T> using common_type_t = typename common_type<T...>::type;
 
 
-template<bool Conditionition, typename T = void> struct enable_if { };
+template<bool Condition, typename T = void> struct enable_if { };
 template<typename T> struct enable_if<true, T> { using type = T; };
-template<bool Conditionition, typename T = void> using enable_if_t = typename enable_if<Conditionition, T>::type;
+template<bool Condition, typename T = void> using enable_if_t = typename enable_if<Condition, T>::type;
+
+namespace details
+{
+    template<typename T, bool = is_arithmetic_v<T>>
+    struct is_unsigned : bool_constant<T(0) < T(-1)> {};
+
+    template<typename T>
+    struct is_unsigned<T, false> : false_type {};
+
+    template<typename T, bool = is_arithmetic_v<T>>
+    struct is_signed : bool_constant<(T(0) > T(-1))> {};
+
+    template<typename T>
+    struct is_signed<T, false>:false_type{};
+}
+template<typename T> struct is_signed : details::is_signed<T>{};
+template<typename T> inline constexpr bool is_signed_v = is_signed<T>::value;
+template<typename T> struct is_unsigned : details::is_unsigned<T> {};
+template<typename T> inline constexpr bool is_unsigned_v = is_unsigned<T>::value;
+
 
 //This is almost the implementation of MSVC in <type_traits> Line 927
 namespace details
@@ -430,12 +421,12 @@ namespace details
     struct sizeof_type<4, T>
     {
         static constexpr auto is_any_long = is_same_v<T, long> || is_same_v<T, unsigned long>;
-        using unsigned_type = conditionitional_t<
+        using unsigned_type = conditional_t<
             is_any_long,
             unsigned long,
             int
         >;
-        using signed_type = conditionitional_t<is_any_long,
+        using signed_type = conditional_t<is_any_long,
             long,
             int
         >;
@@ -508,10 +499,10 @@ template<typename Condition>
 struct conjunction<Condition> : Condition{};
 
 template<typename Condition1, typename Condition2> 
-struct conjunction<Condition1, Condition2> : conditionitional_t<Condition1::value, conjunction<Condition2>, false_type>{};
+struct conjunction<Condition1, Condition2> : conditional_t<Condition1::value, conjunction<Condition2>, false_type>{};
 
 template<typename Condition1, typename Condition2, typename... Conditions>
-struct conjunction<Condition1, Condition2, Conditions...> : conditionitional_t<Condition1::value, conjunction <Condition2, Conditions...>, false_type>{};
+struct conjunction<Condition1, Condition2, Conditions...> : conditional_t<Condition1::value, conjunction <Condition2, Conditions...>, false_type>{};
 
 template<typename... Condition> inline constexpr bool conjunction_v = conjunction<Condition...>::value;
 
@@ -525,10 +516,10 @@ template<typename Condition>
 struct disjunction<Condition> : Condition {};
 
 template<typename Condition1, typename Condition2>
-struct disjunction<Condition1, Condition2> : conditionitional_t<Condition1::value, true_type, disjunction<Condition2>> {};
+struct disjunction<Condition1, Condition2> : conditional_t<Condition1::value, true_type, disjunction<Condition2>> {};
 
 template<typename Condition1, typename Condition2, typename... Conditions>
-struct disjunction<Condition1, Condition2, Conditions...> : conditionitional_t<Condition1::value, true_type, disjunction <Condition2, Conditions...>> {};
+struct disjunction<Condition1, Condition2, Conditions...> : conditional_t<Condition1::value, true_type, disjunction <Condition2, Conditions...>> {};
 
 
 /**
@@ -697,3 +688,31 @@ namespace details
 template<typename Base, typename Derived>
 struct is_base_of : bool_constant<is_class_v<Base>&& is_class_v<Derived>&& decltype(details::test_is_base_of<Base, Derived>(0))::value> {};
 template<typename Base, typename Derived> inline constexpr bool is_base_of_v = is_base_of<Base, Derived>::value;
+
+
+template<typename T>
+struct type_identity
+{
+    using type = T;
+};
+template<typename T> using type_identity_t = typename type_identity<T>::type;
+
+template<typename Lhs, typename Rhs>
+constexpr bool operator==(type_identity_t<Lhs>, type_identity_t<Rhs>)
+{
+    return is_same_v<Lhs, Rhs>;
+}
+
+template<typename Lhs, typename Rhs>
+constexpr bool operator!=(type_identity_t<Lhs> lhs, type_identity_t<Rhs> rhs)
+{
+    return !(lhs == rhs);
+}
+
+template<typename T>
+constexpr auto type_of_impl(T&&)
+{
+    return type_identity_t<remove_reference_t<T>>{};
+}
+
+#define type_of(X) decltype(type_of_impl((X)))
